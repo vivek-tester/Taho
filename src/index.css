@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black: #000000;
+  
+  --color-surface-1: #0A0A0A;
+  --color-surface-2: #111111;
+  --color-surface-3: #181818;
+  
+  --color-card-border: rgba(255,255,255,0.07);
+  --color-card-border-hover: rgba(255,255,255,0.14);
+  
+  --color-taho-gold: #C9922A;
+  --color-taho-gold-dim: rgba(201,146,42,0.12);
+  --color-taho-gold-border: rgba(201,146,42,0.25);
+  
+  --color-taho-primary: #F5F0E8;
+  --color-taho-secondary: #888888;
+  --color-taho-muted: #444444;
+  
+  --color-taho-green: #2ECC71;
+  --color-taho-green-bg: rgba(46,204,113,0.12);
+  
+  --color-taho-teal: #1ABC9C;
+  
+  --color-taho-amber: #F39C12;
+  --color-taho-amber-bg: rgba(243,156,18,0.12);
+  
+  --color-taho-red: #E74C3C;
+  
+  --font-outfit: "Outfit", sans-serif;
+  --font-jetbrains: "JetBrains Mono", monospace;
+}
+
+@layer utilities {
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    will-change: opacity, transform;
+  }
+  
+  .fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .nav-scrolled {
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Lenis recommended base styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
