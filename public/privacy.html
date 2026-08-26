@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Taho</title>
+  <meta name="description" content="Privacy Policy for Taho, the mobile-first API testing and security auditing app for Android." />
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #F5F0E8;
+      font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.7;
+      padding: 3rem 1.25rem 6rem;
+    }
+    main { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.25rem; }
+    .meta { color: #9a948a; font-size: 0.95rem; margin-bottom: 2.5rem; }
+    h2 { font-size: 1.25rem; font-weight: 700; margin: 2.25rem 0 0.75rem; color: #fff; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p, li { color: #d8d2c6; font-size: 1rem; }
+    ul, ol { padding-left: 1.5rem; margin: 0.75rem 0; }
+    li { margin-bottom: 0.5rem; }
+    a { color: #e8c15a; }
+    strong { color: #F5F0E8; }
+    code {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      background: #1a1a1a; border: 1px solid #333;
+      border-radius: 4px; padding: 0.1em 0.35em; font-size: 0.85em;
+    }
+    .card {
+      background: #111; border: 1px solid #262626; border-radius: 12px;
+      padding: 1.25rem 1.5rem; margin: 1rem 0;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+    th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid #262626; vertical-align: top; }
+    th { color: #fff; font-weight: 600; }
+    footer { max-width: 760px; margin: 3rem auto 0; padding-top: 1.5rem; border-top: 1px solid #262626; color: #9a948a; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Effective date: August 25, 2026 · Applies to the Taho Android app</p>
+
+  <p>Taho is a mobile-first API testing and security auditing application for Android, developed and operated by Vivek Sagar (<strong>"Taho"</strong>, <strong>"we"</strong>, <strong>"us"</strong>). This policy explains what data Taho handles, where it is stored, and the choices you have.</p>
+  <p>Taho was designed to be local-first: your API requests, history, collections, environments, and credentials live on <strong>your device</strong>, not on our servers. We collect the minimum data needed to provide accounts and paid subscriptions.</p>
+
+  <h2>1. Summary</h2>
+  <div class="card">
+    <ul>
+      <li><strong>On-device only:</strong> requests, response history, collections, environments, settings, profile details (display name, username, avatar), scheduled monitors, and AI assistant keys.</li>
+      <li><strong>Server-side:</strong> your account email/password (authentication) and your subscription entitlement flag — hosted on Supabase.</li>
+      <li><strong>Payments:</strong> processed by Dodo Payments. Card and billing details go directly to Dodo Payments' checkout; they never pass through the app.</li>
+      <li><strong>No analytics, no advertising IDs, no crash-telemetry SDKs.</strong></li>
+    </ul>
+  </div>
+
+  <h2>2. Data we process</h2>
+
+  <h3>2.1 Account data (stored server-side)</h3>
+  <p>If you create an account, we process your <strong>email address and password</strong> for authentication. Authentication is handled by <a href="https://supabase.com" rel="noopener">Supabase</a> (Supabase Auth, email/password sign-in). Your password is stored only as a modern salted hash by Supabase — never in plain text, and never visible to us. Your email is also used to identify your subscription and, if you choose, to contact you about your account.</p>
+
+  <h3>2.2 Profile data (stored on-device)</h3>
+  <p>Your display name, username, and avatar image are stored locally in the app on your device. The display name you enter at sign-up is kept with your account record in Supabase Auth so it can be restored when you sign back in. Avatars are copied into the app's private storage on your device and are never uploaded.</p>
+
+  <h3>2.3 App content (stored on-device)</h3>
+  <ul>
+    <li><strong>Requests, collections, history, environments, settings</strong> are saved locally using Android SharedPreferences.</li>
+    <li><strong>Credentials</strong> attached to requests and environments (auth tokens, Authorization headers, API keys, cookies, marked-secret variables) are additionally moved into the Android <strong>Keystore-backed secure storage</strong> so they are not kept in plain preferences.</li>
+    <li>Taho does <strong>not</strong> upload, sync, or mirror any of this content to us.</li>
+  </ul>
+
+  <h3>2.4 Subscription data</h3>
+  <p>Paid plans are processed by <a href="https://www.dodopayments.com" rel="noopener">Dodo Payments</a>. When you start a checkout, your <strong>account email and display name</strong> are passed (via a Supabase Edge Function that protects our API keys) to Dodo Payments to create your checkout session. Payment card data is entered on Dodo Payments' page under their privacy policy; it never reaches us.</p>
+  <p>To know whether you have Pro access, we store a minimal entitlement record in Supabase Postgres: your user ID, plan type (monthly/annual), Dodo subscription ID, and billing-period end. The app also caches this status locally so Pro features work offline for up to 24 hours between server confirmations.</p>
+
+  <h3>2.5 AI assistant keys (bring-your-own)</h3>
+  <p>The optional AI assistant uses <strong>your own</strong> API key for Google Gemini or any OpenAI-compatible provider. Keys are stored <strong>only</strong> in the device's secure storage. Requests are made <strong>directly from your device to the provider endpoint you configured</strong> (for example Google's Generative Language API or api.openai.com). There is no Taho server proxy for AI traffic: we never see your key or the prompts/responses exchanged with the provider. Your use of those providers is additionally governed by their own terms and privacy policies.</p>
+
+  <h3>2.6 Network activity inherent to the app</h3>
+  <p>Taho's purpose is sending HTTP requests to servers <strong>you choose</strong>. When you send a request or run a monitor, the target server receives whatever the request contains (URL, headers, body, credentials) and sees your device's network identity (such as your IP address). We do not intercept, log, or store this traffic anywhere other than the local history on your device.</p>
+
+  <h3>2.7 Backups</h3>
+  <p>Backups are <code>.taho</code> files you export yourself. Exports are sanitized: auth tokens, secret environment values, sensitive headers, and response bodies are stripped before the file is created. You decide where these files go (share sheet, cloud drive, email). Importing a backup reads a file you pick from your device.</p>
+
+  <h3>2.8 What we do NOT collect</h3>
+  <ul>
+    <li>No analytics or product-usage telemetry.</li>
+    <li>No crash-reporting SDKs.</li>
+    <li>No advertising identifiers, trackers, or fingerprinting.</li>
+    <li>No location data, contacts, photos, microphone, or camera access.</li>
+  </ul>
+
+  <h2>3. Android permissions</h2>
+  <table>
+    <tr><th>Permission</th><th>Why</th></tr>
+    <tr><td><code>INTERNET</code></td><td>To send the HTTP/WebSocket requests you create, reach Supabase (auth/entitlement) and Dodo Payments (checkout/billing portal), and call your chosen AI provider.</td></tr>
+    <tr><td><code>POST_NOTIFICATIONS</code></td><td>To show locally-generated alerts from your scheduled monitors (Android 13+).</td></tr>
+  </table>
+
+  <h2>4. Third parties</h2>
+  <table>
+    <tr><th>Provider</th><th>Role</th><th>Data involved</th></tr>
+    <tr><td><strong>Supabase</strong> (supabase.com)</td><td>Authentication, entitlement database, Edge Function proxy for payment APIs</td><td>Email, hashed password, user ID, plan type, subscription ID, period end</td></tr>
+    <tr><td><strong>Dodo Payments</strong> (dodopayments.com)</td><td>Payment processing, subscription management, customer portal</td><td>Email, name, and payment details you enter at checkout</td></tr>
+    <tr><td><strong>Your AI provider</strong> (e.g., Google, OpenAI, Groq, OpenRouter, or a local endpoint)</td><td>AI assistant responses (BYOK)</td><td>Your API key and the prompt content you send — direct from your device</td></tr>
+    <tr><td><strong>Servers you test</strong></td><td>The app's core purpose</td><td>Whatever your request contains</td></tr>
+  </table>
+  <p>We do not sell personal data, and we do not share it with anyone else.</p>
+
+  <h2>5. Data retention and deletion</h2>
+  <ul>
+    <li><strong>Local data:</strong> kept until you delete it. Use <em>Settings → Clear All Data</em> inside the app to wipe all locally stored content (requests, history, collections, environments, cached keys, monitors, profile). Uninstalling the app also removes all on-device data.</li>
+    <li><strong>Account:</strong> email us at <a href="mailto:sagarvivek141@gmail.com">sagarvivek141@gmail.com</a> from your account address and we will delete your account and associated server records (profile metadata and entitlement rows). Requests are typically handled within 30 days.</li>
+    <li><strong>Payments:</strong> transaction and billing records held by Dodo Payments are retained by them as required by their policies and applicable law (e.g., tax/accounting rules).</li>
+  </ul>
+
+  <h2>6. Security</h2>
+  <ul>
+    <li>Passwords are handled exclusively by Supabase Auth and stored as hashes.</li>
+    <li>Credentials in the app are kept in Keystore-backed secure storage rather than plain preferences.</li>
+    <li>Entitlement changes are applied server-side by signed webhooks; the app cannot forge them.</li>
+    <li>Backups strip secrets by design, and imported backups cannot re-enable security-relevant settings such as certificate-validation bypasses.</li>
+    <li>No data-broker integrations, no third-party SDKs beyond those listed in §4.</li>
+  </ul>
+  <p>No method of transmission or storage is perfectly secure; please use strong, unique passwords and only point Taho at systems you are authorized to test.</p>
+
+  <h2>7. Your rights (GDPR, DPDP Act, and similar)</h2>
+  <p>Depending on where you live, you may have the right to access, correct, export, restrict, or delete your personal data, to withdraw consent, and to lodge a complaint with a supervisory authority. Because almost all Taho data is already on your device, you can exercise most of these rights yourself (view, edit, export, or clear data in-app). For anything stored server-side (account email/profile record, entitlement row), contact us at <a href="mailto:sagarvivek141@gmail.com">sagarvivek141@gmail.com</a>.</p>
+
+  <h2>8. Children's privacy</h2>
+  <p>Taho is a professional developer tool and is not directed at children under 13 (or the equivalent minimum age in your jurisdiction, such as under 18 without parental consent under some interpretations of India's DPDP Act). We do not knowingly collect personal data from children. If you believe a child has created an account, contact us and we will delete it.</p>
+
+  <h2>9. International transfers</h2>
+  <p>Your account and entitlement data may be processed in regions where Supabase and Dodo Payments operate, which may differ from your country. Where required, appropriate safeguards (such as contractual clauses) apply to those transfers.</p>
+
+  <h2>10. Changes to this policy</h2>
+  <p>If we make material changes, we will update the effective date above and, for significant changes, notify you in the app or by email. Continued use after an update means you accept the revised policy.</p>
+
+  <h2>11. Contact</h2>
+  <p>Vivek Sagar<br />Email: <a href="mailto:sagarvivek141@gmail.com">sagarvivek141@gmail.com</a></p>
+</main>
+<footer><a href="/">← taho.app home</a> · <a href="/terms.html">Terms of Service</a></footer>
+</body>
+</html>
