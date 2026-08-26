@@ -30,11 +30,11 @@ export const Navbar = ({ onOpenLegal }: { onOpenLegal?: (type: "privacy" | "term
         </a>
 
         {/* Desktop Nav Items */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-7">
           <a href="#features" className="font-outfit text-[14px] text-taho-secondary hover:text-taho-primary transition-colors">Features</a>
           <a href="#security" className="font-outfit text-[14px] text-taho-secondary hover:text-taho-primary transition-colors flex items-center gap-1.5">
-            <span>OWASP Audit</span>
-            <span className="bg-taho-gold-dim text-taho-gold font-jetbrains text-[9px] px-1.5 py-0.5 rounded font-semibold">A-F</span>
+            <span>Diagnostics</span>
+            <span className="bg-taho-gold-dim text-taho-gold font-jetbrains text-[9px] px-1.5 py-0.5 rounded font-semibold">8 Tabs</span>
           </a>
           <a href="#protocols" className="font-outfit text-[14px] text-taho-secondary hover:text-taho-primary transition-colors">Protocols</a>
           <a href="#comparison" className="font-outfit text-[14px] text-taho-secondary hover:text-taho-primary transition-colors">Comparison</a>
@@ -71,7 +71,7 @@ export const Navbar = ({ onOpenLegal }: { onOpenLegal?: (type: "privacy" | "term
       {mobileMenuOpen && (
         <div className="lg:hidden bg-surface-1 border-b border-card-border px-6 py-6 space-y-4 animate-fade-in">
           <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block font-outfit text-[16px] text-taho-secondary hover:text-taho-primary">Features</a>
-          <a href="#security" onClick={() => setMobileMenuOpen(false)} className="block font-outfit text-[16px] text-taho-secondary hover:text-taho-primary">OWASP Security Audit</a>
+          <a href="#security" onClick={() => setMobileMenuOpen(false)} className="block font-outfit text-[16px] text-taho-secondary hover:text-taho-primary">8-Tab Diagnostics & OWASP</a>
           <a href="#protocols" onClick={() => setMobileMenuOpen(false)} className="block font-outfit text-[16px] text-taho-secondary hover:text-taho-primary">Protocols & Streaming</a>
           <a href="#comparison" onClick={() => setMobileMenuOpen(false)} className="block font-outfit text-[16px] text-taho-secondary hover:text-taho-primary">Comparison</a>
           <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block font-outfit text-[16px] text-taho-secondary hover:text-taho-primary">Pricing</a>

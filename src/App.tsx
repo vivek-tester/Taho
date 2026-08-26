@@ -4,6 +4,7 @@ import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { Problem } from "./components/Problem";
 import { Features } from "./components/Features";
+import { ResponseInspectorSection } from "./components/ResponseInspectorSection";
 import { HowItWorks } from "./components/HowItWorks";
 import { Comparison } from "./components/Comparison";
 import { Pricing } from "./components/Pricing";
@@ -95,6 +96,10 @@ export default function App() {
       
       <FadeInSection>
         <Features />
+      </FadeInSection>
+
+      <FadeInSection>
+        <ResponseInspectorSection />
       </FadeInSection>
 
       <FadeInSection>
