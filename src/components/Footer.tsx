@@ -1,117 +1,100 @@
-import { useState } from 'react';
-import { LogoMark } from './Logo';
+import { LogoMark } from "./Logo";
 
-export const Footer = () => {
-  const [activeModal, setActiveModal] = useState<'privacy' | 'terms' | 'contact' | null>(null);
-
+export const Footer = ({ onOpenLegal }: { onOpenLegal: (type: "privacy" | "terms" | "contact") => void }) => {
   return (
-    <>
-      <footer className="bg-black border-t border-[rgba(255,255,255,0.06)] py-[40px]">
-        <div className="max-w-[1100px] mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 items-center">
-          <div className="flex flex-col items-center md:items-start">
-            <div className="flex items-center gap-2">
-              <LogoMark className="w-[22px] h-[22px]" />
-              <span className="font-outfit font-bold text-[16px] tracking-[-0.01em] text-taho-primary">Taho</span>
-            </div>
-            <div className="font-outfit text-[12px] text-taho-muted mt-2">
-              by Vivek Sagar
-            </div>
-            <div className="font-outfit text-[12px] text-taho-muted mt-[6px]">
-              Built in India 🇮🇳
-            </div>
+    <footer className="bg-black border-t border-[rgba(255,255,255,0.08)] py-12">
+      <div className="max-w-[1180px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
+        
+        {/* Brand & Creator */}
+        <div className="md:col-span-2 space-y-3">
+          <div className="flex items-center gap-2.5">
+            <LogoMark className="w-6 h-6" />
+            <span className="font-outfit font-extrabold text-[18px] tracking-tight text-taho-primary">Taho</span>
           </div>
-
-          <div className="flex justify-center flex-wrap gap-[20px]">
-            <a href="#" onClick={(e) => { e.preventDefault(); setActiveModal('privacy'); }} className="font-outfit text-[13px] text-taho-muted hover:text-taho-secondary transition-colors">Privacy Policy</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); setActiveModal('terms'); }} className="font-outfit text-[13px] text-taho-muted hover:text-taho-secondary transition-colors">Terms of Service</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); setActiveModal('contact'); }} className="font-outfit text-[13px] text-taho-muted hover:text-taho-secondary transition-colors">Contact</a>
-          </div>
-
-          <div className="flex flex-col items-center md:items-end">
-            <div className="font-jetbrains text-[11px] text-taho-muted">
-              Taho v1.0.0
-            </div>
-            <div className="font-outfit text-[11px] text-[#333333] mt-1">
-              API Tester & Security Scanner
-            </div>
+          <p className="font-outfit text-[14px] text-taho-secondary max-w-[360px] leading-relaxed">
+            The developer-first, offline-capable API testing and OWASP security audit workbench for Android.
+          </p>
+          <div className="flex items-center gap-3 pt-2 font-jetbrains text-[12px] text-taho-muted">
+            <span>By Vivek Sagar</span>
+            <span>•</span>
+            <span>Built in India 🇮🇳</span>
           </div>
         </div>
-      </footer>
 
-      {activeModal && (
-        <div 
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={() => setActiveModal(null)}
-        >
-          <div 
-            className="bg-surface-1 border border-card-border rounded-[16px] p-[32px] max-w-[400px] w-full text-center relative shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          >
-            <button 
-              onClick={() => setActiveModal(null)}
-              className="absolute top-[16px] right-[20px] text-[20px] text-taho-muted hover:text-taho-primary transition-colors"
-              aria-label="Close"
-            >
-              ×
-            </button>
-            
-            {activeModal === 'contact' && (
-              <>
-                <h3 className="font-outfit font-bold text-[24px] text-taho-primary mb-2">Contact</h3>
-                <p className="font-outfit text-[14px] text-taho-secondary mb-6">Reach out to the creator directly.</p>
-                
-                <div className="flex flex-col gap-3 text-left">
-                  <a href="mailto:sagarvivek141@gmail.com" className="bg-surface-2 border border-card-border rounded-lg p-4 flex items-center gap-3 hover:border-taho-gold transition-colors group">
-                    <span className="text-[20px]">📧</span>
-                    <div>
-                      <div className="font-jetbrains text-[10px] text-taho-muted uppercase tracking-wider">Email</div>
-                      <div className="font-outfit text-[14px] text-taho-primary group-hover:text-taho-gold transition-colors">sagarvivek141@gmail.com</div>
-                    </div>
-                  </a>
-                  
-                  <a href="https://instagram.com/eternal0p" target="_blank" rel="noopener noreferrer" className="bg-surface-2 border border-card-border rounded-lg p-4 flex items-center gap-3 hover:border-taho-gold transition-colors group">
-                    <span className="text-[20px]">📸</span>
-                    <div>
-                      <div className="font-jetbrains text-[10px] text-taho-muted uppercase tracking-wider">Instagram</div>
-                      <div className="font-outfit text-[14px] text-taho-primary group-hover:text-taho-gold transition-colors">@eternal0p</div>
-                    </div>
-                  </a>
-                </div>
-              </>
-            )}
-
-            {activeModal === 'privacy' && (
-              <>
-                <h3 className="font-outfit font-bold text-[24px] text-taho-primary mb-4">Privacy Policy</h3>
-                <p className="font-outfit text-[14px] text-taho-secondary leading-relaxed text-left">
-                  This policy is currently being updated. In the meantime, rest assured that Taho stores all its data locally on your device. We respect your privacy and do not transmit your API keys or request data to any cloud servers.
-                </p>
-                <button 
-                  onClick={() => setActiveModal(null)}
-                  className="mt-6 w-full bg-surface-2 border border-card-border text-taho-primary p-3 rounded-lg font-outfit text-[14px] hover:border-taho-gold transition-colors"
-                >
-                  Got it
-                </button>
-              </>
-            )}
-
-            {activeModal === 'terms' && (
-              <>
-                <h3 className="font-outfit font-bold text-[24px] text-taho-primary mb-4">Terms of Service</h3>
-                <p className="font-outfit text-[14px] text-taho-secondary leading-relaxed text-left">
-                  These terms are currently being drafted. By using the free beta, you agree to provide feedback and not use the tool for malicious purposes or targeting systems you do not own or have clear authorization to test.
-                </p>
-                <button 
-                  onClick={() => setActiveModal(null)}
-                  className="mt-6 w-full bg-surface-2 border border-card-border text-taho-primary p-3 rounded-lg font-outfit text-[14px] hover:border-taho-gold transition-colors"
-                >
-                  Agree
-                </button>
-              </>
-            )}
+        {/* Legal & Compliance */}
+        <div className="space-y-3">
+          <div className="font-jetbrains font-semibold text-[11px] uppercase tracking-wider text-taho-gold">
+            Legal & Privacy
           </div>
+          <ul className="space-y-2 font-outfit text-[14px]">
+            <li>
+              <button 
+                onClick={() => onOpenLegal("privacy")}
+                className="text-taho-secondary hover:text-taho-primary transition-colors cursor-pointer text-left"
+              >
+                Privacy Policy
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onOpenLegal("terms")}
+                className="text-taho-secondary hover:text-taho-primary transition-colors cursor-pointer text-left"
+              >
+                Terms of Service
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onOpenLegal("contact")}
+                className="text-taho-secondary hover:text-taho-primary transition-colors cursor-pointer text-left"
+              >
+                Security & Contact
+              </button>
+            </li>
+          </ul>
         </div>
-      )}
-    </>
+
+        {/* Distribution & Version */}
+        <div className="space-y-3">
+          <div className="font-jetbrains font-semibold text-[11px] uppercase tracking-wider text-taho-gold">
+            Distribution
+          </div>
+          <ul className="space-y-2 font-outfit text-[14px]">
+            <li>
+              <a 
+                href="https://www.indusappstore.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-taho-secondary hover:text-taho-primary transition-colors"
+              >
+                Indus Appstore 🇮🇳
+              </a>
+            </li>
+            <li>
+              <a 
+                href="https://github.com/vivek-tester/Project-Taho" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-taho-secondary hover:text-taho-primary transition-colors"
+              >
+                GitHub Repository
+              </a>
+            </li>
+            <li className="font-jetbrains text-[12px] text-taho-muted pt-1">
+              Version 1.2.0 (Build 3)
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div className="max-w-[1180px] mx-auto px-6 pt-8 mt-8 border-t border-[rgba(255,255,255,0.04)] flex flex-col sm:flex-row items-center justify-between gap-4 font-jetbrains text-[11px] text-taho-muted">
+        <div>© 2026 Taho. All rights reserved. Governed by the laws of India.</div>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-taho-green" />
+          <span>Indus Appstore Verified Release</span>
+        </div>
+      </div>
+    </footer>
   );
 };
