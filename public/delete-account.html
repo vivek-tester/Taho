@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taho — Account & Data Deletion</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 28px;
+            background-color: #161b22;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+        }
+        h1, h2 {
+            color: #58a6ff;
+        }
+        h1 {
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 12px;
+        }
+        .alert-box {
+            background-color: #381a1a;
+            border: 1px solid #f85149;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+            color: #ff7b72;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+        input[type="email"], textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input[type="email"]:focus, textarea:focus {
+            border-color: #58a6ff;
+            outline: none;
+        }
+        button {
+            background-color: #da3633;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #b62324;
+        }
+        .instruction-box {
+            background-color: #1c2128;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 30px;
+            border-top: 1px solid #30363d;
+            padding-top: 16px;
+            font-size: 0.85em;
+            color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Taho — Account & Data Deletion</h1>
+        <p>In compliance with the <strong>Google Play User Data & Account Deletion Policy</strong>, this web resource allows Taho users to request permanent deletion of their account and associated server data without needing to reinstall the application.</p>
+
+        <div class="alert-box">
+            <strong>Warning: Permanent Deletion</strong><br>
+            Deleting your account will permanently delete your authentication record, cloud user profile, and subscription associations from our Supabase backend. This action cannot be reversed.
+        </div>
+
+        <h2>Method 1: In-App Deletion (Recommended)</h2>
+        <div class="instruction-box">
+            <p>If you still have the Taho app installed on your Android device, you can delete your account instantly:</p>
+            <ol>
+                <li>Open <strong>Taho</strong> on your device.</li>
+                <li>Tap <strong>Settings</strong> (gear icon) &rarr; tap your <strong>Profile</strong>.</li>
+                <li>Scroll to <strong>ACCOUNT ACTIONS</strong> &rarr; tap <strong>Delete Account</strong>.</li>
+                <li>Confirm deletion. Your account and cloud data will be wiped immediately.</li>
+            </ol>
+        </div>
+
+        <h2>Method 2: Request Web Deletion</h2>
+        <p>If you uninstalled the application or cannot access your device, submit your registered account details below to initiate deletion:</p>
+
+        <form action="mailto:sagarvivek141@gmail.com?subject=Taho%20Account%20Deletion%20Request" method="POST" enctype="text/plain">
+            <div class="form-group">
+                <label for="email">Registered Account Email Address *</label>
+                <input type="email" id="email" name="account_email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="notes">Additional Information (Optional)</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Specify any additional requests, e.g., date of account creation."></textarea>
+            </div>
+            <button type="submit">Submit Account Deletion Request</button>
+        </form>
+
+        <h2>What Happens After Submission</h2>
+        <ul>
+            <li><strong>Verification:</strong> A verification confirmation will be sent to the submitted email to confirm ownership.</li>
+            <li><strong>Data Purged:</strong> Authentication credentials, email address, profile names, and cloud session records are purged within 48 hours of verification (in-app deletion is instantaneous).</li>
+            <li><strong>Local Data:</strong> Local API requests, history, and collections on previously used devices remain local to the device and can be wiped via Android Application Settings &rarr; Clear Storage.</li>
+            <li><strong>Financial Retention:</strong> Financial transaction identifiers required under applicable statutory laws (such as GST records) may be retained in anonymized format solely for tax compliance.</li>
+        </ul>
+
+        <div class="footer">
+            <p>&copy; 2026 Taho (Vivek Sagar). <a href="privacy.html">Privacy Policy</a> &bull; Support: <a href="mailto:sagarvivek141@gmail.com">sagarvivek141@gmail.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
