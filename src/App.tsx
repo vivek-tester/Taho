@@ -30,21 +30,23 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [demo, setDemo] = useState(0);
   const [path, setPath] = useState(window.location.pathname.replace(/\/$/, "") || "/");
-  const isLegal = window.location.hash === "#privacy" || window.location.hash === "#terms";
+  const [hash, setHash] = useState(window.location.hash);
+  const isLegal = hash === "#privacy" || hash === "#terms";
 
   useEffect(() => {
-    const onPop = () => setPath(window.location.pathname.replace(/\/$/, "") || "/");
+    const onPop = () => { setPath(window.location.pathname.replace(/\/$/, "") || "/"); setHash(window.location.hash); };
     window.addEventListener("popstate", onPop);
+    window.addEventListener("hashchange", onPop);
     const lenis = new Lenis({ duration: 1.05, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
     let frame = 0;
     const raf = (time: number) => { lenis.raf(time); frame = requestAnimationFrame(raf); };
     frame = requestAnimationFrame(raf);
-    return () => { window.removeEventListener("popstate", onPop); lenis.destroy(); cancelAnimationFrame(frame); };
+    return () => { window.removeEventListener("popstate", onPop); window.removeEventListener("hashchange", onPop); lenis.destroy(); cancelAnimationFrame(frame); };
   }, []);
 
   const navigate = (href: string) => { if (href.startsWith("#")) return; window.history.pushState({}, "", href); setPath(href); setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const currentPage = useMemo(() => routeContent[path], [path]);
-  if (isLegal) return <LegalPage type={window.location.hash === "#terms" ? "terms" : "privacy"} onBack={() => { window.location.hash = ""; }} />;
+  if (isLegal) return <LegalPage type={hash === "#terms" ? "terms" : "privacy"} onBack={() => { window.location.hash = ""; }} />;
   if (currentPage) return <Page page={currentPage} navigate={navigate} />;
 
   return <div className="site-shell">
@@ -53,31 +55,19 @@ export default function App() {
       <div className="nav-dropdown"><button>Developers <ChevronDown size={14}/></button><div className="dropdown-panel"><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Documentation</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>CLI</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Integrations</a></div></div>
       <a href="#founding">Founding</a><a href="/pricing" onClick={(e) => { e.preventDefault(); navigate("/pricing"); }}>Pricing</a><a className="nav-cta" href="/download" onClick={(e) => { e.preventDefault(); navigate("/download"); }}>Get Taho <ArrowRight size={15}/></a>
     </nav><button className="menu-toggle" aria-label="Toggle navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button></header>
-
     <main>
       <section className="hero section-pad"><div className="hero-grid"><div className="hero-copy"><div className="eyebrow"><span className="status-dot"/> MOBILE-FIRST API ENGINEERING</div><h1>The API engineering workbench <span>built for your phone.</span></h1><p className="hero-lead">Test APIs. Find security flaws. Automate regression checks. Understand every response—from anywhere.</p><div className="hero-actions"><a className="button primary" href="/download" onClick={(e) => { e.preventDefault(); navigate("/download"); }}>Get Taho <ArrowRight size={17}/></a><a className="button secondary" href="#demo">See how it works <span>↓</span></a></div><div className="hero-proof"><span><Check size={14}/> Testing</span><span><Check size={14}/> Security</span><span><Check size={14}/> Automation</span><span><Check size={14}/> BYOK AI</span></div></div><ProductVisual/></div></section>
-
       <section id="demo" className="demo-section section-pad"><div className="section-kicker">PRODUCT PROOF / INTERACTIVE</div><div className="section-heading-row"><div><h2>One workflow. Five useful views.</h2><p>Build a request, inspect the response, analyze security, assert behavior, then run the workflow again.</p></div><span className="demo-data">DEMO DATA</span></div><div className="product-demo"><div className="demo-tabs">{demoStates.map((item, i) => { const Icon = item.icon; return <button className={demo === i ? "active" : ""} onClick={() => setDemo(i)} key={item.label}><Icon size={15}/>{item.label}</button>; })}</div><div className="demo-content"><div className="demo-title"><span>TAHO / WORKBENCH</span><span className="live-indicator"><CircleDot size={12}/> READY</span></div>{demoStates[demo].content}</div></div></section>
-
       <section className="problem section-pad"><div className="problem-card"><div><div className="section-kicker">THE PROBLEM</div><h2>Serious API work shouldn't stop when you leave your desk.</h2></div><p>Desktop API clients are powerful, but the workflow is often anchored to one machine. Taho takes the engineering loop—request, response, security, tests and automation—and designs it for a phone first.</p></div></section>
-
       <section className="pillars section-pad">{pillars.map((pillar) => { const Icon = pillar.icon; return <article className="pillar" id={pillar.id} key={pillar.id}><div className="pillar-number">{pillar.eyebrow}</div><div className="pillar-grid"><div><div className="pillar-icon"><Icon size={21}/></div><h2>{pillar.title}</h2></div><div><p>{pillar.copy}</p><ul>{pillar.points.map(point => <li key={point}><Check size={15}/>{point}</li>)}</ul></div></div></article>; })}</section>
-
       <section id="response" className="response section-pad"><div className="response-copy"><div className="section-kicker">04 / RESPONSE INTELLIGENCE</div><h2>Understand every response.</h2><p>A response viewer should tell you more than whether JSON is pretty. Inspect status, headers, cookies, diagnostics, assertions, diffs, JWT details and security findings in one workflow.</p><div className="response-tree"><span>Response</span><span>├─ Diagnostics</span><span>├─ Security</span><span>├─ Assertions</span><span>├─ Diff</span><span>└─ AI explanation</span></div></div><div className="response-card"><div className="response-card-top"><span>200 OK</span><span>428 ms</span><span>application/json</span></div><div className="json-block">{`{\n  "user": {\n    "id": 1842,\n    "name": "Ada",\n    "roles": ["developer"]\n  },\n  "meta": {"requestId": "demo-7c91"}\n}`}</div><div className="diagnostic-row"><span>SECURITY</span><b>A-</b><span>2 findings</span></div></div></section>
-
       <section className="ai-strip section-pad"><div className="ai-card"><div className="ai-icon"><Bot size={23}/></div><div><div className="section-kicker">05 / AI — BYOK</div><h2>Your API copilot.</h2><p>Explain responses, generate assertions, analyze failures and explore edge cases with your own AI provider. AI enhances the workflow; it isn't the product.</p></div><a href="/ai" onClick={(e) => { e.preventDefault(); navigate("/ai"); }} className="text-link">Explore AI <ArrowRight size={15}/></a></div></section>
-
       <section className="mcp section-pad"><div className="mcp-card"><div><div className="section-kicker">06 / MCP — ADVANCED / PREVIEW</div><h2>Let AI agents work with real API tooling.</h2><p>Expose bounded tooling for request execution, response inspection, security analysis and test runs—with explicit permissions and user control.</p><a href="/mcp" onClick={(e) => { e.preventDefault(); navigate("/mcp"); }} className="text-link">View MCP architecture <ArrowRight size={15}/></a></div><div className="flow"><span>AI Agent</span><i>↓</i><span>Taho MCP Bridge</span><i>↓</i><span>Request → Response → Security → Tests</span></div></div></section>
-
       <section className="ecosystem section-pad"><div className="section-kicker">DEVELOPER ECOSYSTEM</div><h2>Bring the workflow. Keep the engineering loop.</h2><div className="ecosystem-flow"><span>cURL / Postman / OpenAPI / HAR</span><b>↓</b><strong>TAHO</strong><b>↓</b><span>Testing → Security → Automation</span><b>↓</b><span>CLI → CI/CD → Monitoring</span></div></section>
-
       <section id="founding" className="founding section-pad"><div className="founding-card"><div><div className="section-kicker">PRE-CAMPAIGN / FOUNDING SUPPORT</div><h2>Help build the next generation of mobile API tooling.</h2><p>Taho exists because serious API tooling should not require a desktop. A future supporter program can help fund product development, mobile UX, security research, automation, documentation and reliability.</p></div><div className="supporter-tiers"><div><span>Supporter</span><b>₹499</b><small>PROPOSED</small></div><div><span>Early Pro</span><b>₹999</b><small>PROPOSED</small></div><div><span>Founder</span><b>₹2,499</b><small>PROPOSED</small></div><div><span>Sponsor</span><b>₹10,000+</b><small>PROPOSED</small></div></div><div className="founding-actions"><a className="button primary" href="mailto:sagarvivek141@gmail.com?subject=Taho%20Founding%20List">Join the founding list <ArrowRight size={16}/></a><span>Planned structure · not a live campaign</span></div></div></section>
-
       <section className="roadmap section-pad"><div className="section-kicker">ROADMAP / HONEST STATUS</div><h2>What's shipped, what's next, what's still an idea.</h2><div className="roadmap-grid"><Roadmap title="NOW" status="Available" items={["Core API testing", "Security analysis", "Collections", "Environments", "Response intelligence"]}/><Roadmap title="NEXT" status="Beta / Planned" items={["Advanced automation", "Monitoring", "CLI / CI", "Expanded protocol support", "Improved reporting"]}/><Roadmap title="EXPLORING" status="Exploring" items={["AI expansion", "MCP", "Team workflows", "Cloud sync", "Advanced API security"]}/></div></section>
-
       <section className="trust section-pad"><div className="trust-grid"><div><div className="section-kicker">TRUST / PRIVACY</div><h2>Your API data stays under your control.</h2></div><div className="trust-list"><span><LockKeyhole size={17}/> Local-first capabilities where supported</span><span><Bot size={17}/> BYOK AI for supported providers</span><span><ShieldCheck size={17}/> Secure secret handling</span><span><Code2 size={17}/> Transparent product boundaries</span></div></div></section>
-    </main>
-    <Footer navigate={navigate}/>
+    </main><Footer navigate={navigate}/>
   </div>;
 }
 
