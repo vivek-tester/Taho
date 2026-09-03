@@ -1,126 +1,87 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Lenis from "lenis";
-import { Navbar } from "./components/Navbar";
-import { Hero } from "./components/Hero";
-import { Problem } from "./components/Problem";
-import { Features } from "./components/Features";
-import { ResponseInspectorSection } from "./components/ResponseInspectorSection";
-import { HowItWorks } from "./components/HowItWorks";
-import { Comparison } from "./components/Comparison";
-import { Pricing } from "./components/Pricing";
-import { Footer } from "./components/Footer";
-import { FadeInSection } from "./components/FadeInSection";
-import { LegalModal } from "./components/LegalModals";
+import { ArrowRight, Bot, Check, ChevronDown, CircleDot, Code2, GitBranch, LockKeyhole, Menu, Play, ShieldCheck, Terminal, TestTube2, X, Zap } from "lucide-react";
 import { LegalPage } from "./components/LegalPage";
 
+const demoStates = [
+  { label: "Request", icon: Code2, content: <div className="demo-panel-grid"><div className="demo-row"><span className="method">GET</span><span className="mono">api.example.com/users</span><span className="ok">READY</span></div><div className="demo-code"><span className="dim">Authorization:</span> Bearer ••••••••••••</div><div className="demo-code"><span className="dim">Accept:</span> application/json</div><div className="demo-action"><Play size={14} fill="currentColor" /> Send request</div></div> },
+  { label: "Response", icon: Terminal, content: <div className="demo-panel-grid"><div className="demo-stat-grid"><span><b>200</b><small>STATUS</small></span><span><b>428ms</b><small>LATENCY</small></span><span><b>JSON</b><small>CONTENT</small></span></div><div className="demo-json"><span className="json-key">"id"</span>: 1842,<br/><span className="json-key">"name"</span>: "Ada",<br/><span className="json-key">"role"</span>: "developer"</div></div> },
+  { label: "Security", icon: ShieldCheck, content: <div className="demo-panel-grid"><div className="grade-line"><div><small>SECURITY GRADE</small><strong>A-</strong></div><span className="finding-count">2 findings</span></div><div className="finding"><span className="severity high">HIGH</span><span>Missing security header</span><span className="arrow">→</span></div><div className="finding"><span className="severity medium">MED</span><span>Weak cookie configuration</span><span className="arrow">→</span></div><p className="demo-note">Demo data · automated analysis, not a penetration test.</p></div> },
+  { label: "Tests", icon: TestTube2, content: <div className="demo-panel-grid"><div className="demo-stat-grid"><span><b>14</b><small>ASSERTIONS</small></span><span><b className="success-text">13</b><small>PASSED</small></span><span><b className="warning-text">1</b><small>WARNING</small></span></div><div className="test-list"><span><Check size={14}/> status is 2xx</span><span><Check size={14}/> content-type is JSON</span><span><CircleDot size={14}/> response time &lt; 500ms</span></div></div> },
+  { label: "Runner", icon: Zap, content: <div className="demo-panel-grid">{["Login", "Create user", "Fetch user", "Update user"].map((item, i) => <div className="runner-row" key={item}><span>{String(i + 1).padStart(2, "0")}</span><b>{item}</b><Check size={14}/></div>)}<div className="runner-result"><span>4 requests</span><span>4 passed</span><span>1.8s demo run</span></div></div> }
+];
+
+const pillars = [
+  { id: "testing", eyebrow: "01 / TEST", title: "Test APIs without carrying a desktop around.", copy: "Build serious HTTP workflows from your phone. Work with requests, environments, variables, authentication, headers, bodies, cookies, assertions and collections in a touch-first interface.", icon: TestTube2, points: ["HTTP requests and environments", "Assertions and collection runner", "GraphQL, WebSockets and SSE where supported"] },
+  { id: "security", eyebrow: "02 / SECURE", title: "Don't just test whether an API works. Test whether it is safe.", copy: "Run OWASP-informed checks alongside functional testing. Surface security headers, cookie configuration, JWT details and response diagnostics with severity-oriented findings.", icon: ShieldCheck, points: ["Security grading and findings", "JWT and cookie analysis", "Automated checks with explicit limitations"] },
+  { id: "automation", eyebrow: "03 / AUTOMATE", title: "Turn API checks into repeatable workflows.", copy: "Chain requests, pass variables, assert outcomes and run collections repeatedly. Build toward CLI, CI/CD and monitoring workflows without turning your phone into a toy.", icon: GitBranch, points: ["Collections and chained requests", "Variables, transforms and assertions", "Run history and automation roadmap"] }
+];
+
+const routeContent: Record<string, { title: string; intro: string; sections: { title: string; copy: string }[] }> = {
+  "/security": { title: "Find API security problems before they become incidents.", intro: "Security analysis belongs beside functional API testing—not in a separate tool you remember to open later.", sections: [{ title: "Why functional tests aren't enough", copy: "A successful 200 response says little about transport headers, cookie flags, information disclosure or other API security signals. Taho pairs response inspection with automated checks." }, { title: "Automated findings", copy: "Review security grades, severity-oriented findings and remediation context. Results are automated analysis and should be treated as development assistance, not formal certification or a substitute for professional penetration testing." }, { title: "Responsible use", copy: "Only test systems you own or have explicit permission to assess. Taho's security tooling is designed for authorized engineering and testing workflows." }] },
+  "/ai": { title: "Your API copilot.", intro: "Use your own AI provider to understand responses, generate assertions and work through API problems faster.", sections: [{ title: "Explain the response", copy: "Give a response context and use AI to turn unfamiliar payloads and failures into an explanation you can act on." }, { title: "Generate tests", copy: "Use AI to propose assertions, requests and edge cases, then review and run them inside the underlying API workflow." }, { title: "BYOK by design", copy: "AI is an optional layer. Where BYOK is supported, your own provider credentials power inference rather than implying that Taho provides unlimited hosted inference." }] },
+  "/mcp": { title: "Let AI agents work with real API tooling.", intro: "Taho's MCP direction connects agentic workflows to request execution, response inspection and testing while keeping permissions and user control explicit.", sections: [{ title: "Advanced / Preview", copy: "MCP infrastructure may be behind a feature flag for the current launch. Availability must be checked against the product build rather than assumed from this marketing page." }, { title: "Architecture", copy: "AI agent → Taho MCP bridge → request execution → response inspection → security analysis → test execution. The bridge is intended to keep tool access bounded and understandable." }, { title: "Safety boundaries", copy: "Agent access should use explicit permissions and controlled execution boundaries. Do not treat MCP as a production cloud-agent platform unless the corresponding product capability is actually released." }] },
+  "/developers": { title: "Developer resources, not marketing fluff.", intro: "Everything around Taho should help you get from an API collection to a repeatable engineering workflow.", sections: [{ title: "Documentation", copy: "Document requests, environments, assertions, security analysis and supported integrations with concrete examples." }, { title: "CLI and CI/CD", copy: "The roadmap includes developer automation around CLI and CI/CD. Mark capabilities according to their actual release state." }, { title: "Imports and ecosystem", copy: "Where supported, bring existing API workflows into Taho through formats such as cURL, Postman, OpenAPI or HAR. Compatibility should be described precisely rather than promised universally." }] },
+  "/pricing": { title: "Pricing that doesn't hide the terms.", intro: "Use authoritative product and platform pricing rather than hard-coded marketing claims that can drift out of date.", sections: [{ title: "Core", copy: "The site can describe Free/Core capabilities once they are confirmed against the current product and billing configuration." }, { title: "Pro", copy: "Pro capabilities, billing period, renewal and cancellation should come from the authoritative pricing source before publication." }, { title: "No invented numbers", copy: "Until pricing is finalized and verified, this page intentionally avoids fabricated prices." }] },
+  "/download": { title: "Get Taho.", intro: "Use the current official distribution path to install the app and start testing APIs from your phone.", sections: [{ title: "Current distribution", copy: "The existing site points to the Indus Appstore. Keep distribution messaging aligned with the actual release status." }, { title: "What to expect", copy: "Taho is positioned as a mobile-first API engineering workbench covering testing, response understanding, security analysis and automation." }] }
+};
+
 export default function App() {
-  const [activeModal, setActiveModal] = useState<"privacy" | "terms" | "contact" | null>(null);
-  const [fullLegalView, setFullLegalView] = useState<"privacy" | "terms" | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [demo, setDemo] = useState(0);
+  const [path, setPath] = useState(window.location.pathname.replace(/\/$/, "") || "/");
+  const isLegal = window.location.hash === "#privacy" || window.location.hash === "#terms";
 
   useEffect(() => {
-    // Check initial hash for deep linking (e.g. #privacy or #terms)
-    const checkHash = () => {
-      const hash = window.location.hash.toLowerCase();
-      if (hash === "#privacy") {
-        setFullLegalView("privacy");
-      } else if (hash === "#terms") {
-        setFullLegalView("terms");
-      } else {
-        setFullLegalView(null);
-      }
-    };
-
-    checkHash();
-    window.addEventListener("hashchange", checkHash);
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      wheelMultiplier: 1,
-    });
-
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest("a");
-      if (anchor && anchor.hash && anchor.hash.startsWith("#") && anchor.origin === window.location.origin) {
-        if (anchor.hash === "#privacy" || anchor.hash === "#terms") {
-          return; // Handled by hashchange
-        }
-        e.preventDefault();
-        lenis.scrollTo(anchor.hash, { offset: -64 });
-      }
-    };
-
-    document.addEventListener("click", handleAnchorClick);
-
-    return () => {
-      window.removeEventListener("hashchange", checkHash);
-      lenis.destroy();
-      cancelAnimationFrame(rafId);
-      document.removeEventListener("click", handleAnchorClick);
-    };
+    const onPop = () => setPath(window.location.pathname.replace(/\/$/, "") || "/");
+    window.addEventListener("popstate", onPop);
+    const lenis = new Lenis({ duration: 1.05, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    let frame = 0;
+    const raf = (time: number) => { lenis.raf(time); frame = requestAnimationFrame(raf); };
+    frame = requestAnimationFrame(raf);
+    return () => { window.removeEventListener("popstate", onPop); lenis.destroy(); cancelAnimationFrame(frame); };
   }, []);
 
-  if (fullLegalView) {
-    return (
-      <LegalPage 
-        type={fullLegalView} 
-        onBack={() => {
-          window.location.hash = "";
-          setFullLegalView(null);
-        }} 
-      />
-    );
-  }
+  const navigate = (href: string) => { if (href.startsWith("#")) return; window.history.pushState({}, "", href); setPath(href); setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const currentPage = useMemo(() => routeContent[path], [path]);
+  if (isLegal) return <LegalPage type={window.location.hash === "#terms" ? "terms" : "privacy"} onBack={() => { window.location.hash = ""; }} />;
+  if (currentPage) return <Page page={currentPage} navigate={navigate} />;
 
-  return (
-    <div className="w-full h-full overflow-x-hidden selection:bg-taho-gold selection:text-black">
-      <Navbar onOpenLegal={(type) => setActiveModal(type)} />
-      
-      <FadeInSection>
-        <Hero />
-      </FadeInSection>
-      
-      <FadeInSection>
-        <Problem />
-      </FadeInSection>
-      
-      <FadeInSection>
-        <Features />
-      </FadeInSection>
+  return <div className="site-shell">
+    <header className="topbar"><a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="brand"><span className="brand-mark">T</span><span>TAHO</span></a><nav className={menuOpen ? "nav-links open" : "nav-links"}>
+      <div className="nav-dropdown"><button>Product <ChevronDown size={14}/></button><div className="dropdown-panel"><a href="#testing">API Testing</a><a href="#security">Security</a><a href="#automation">Automation</a><a href="#response">Response Intelligence</a><a href="/ai" onClick={(e) => { e.preventDefault(); navigate("/ai"); }}>AI</a><a href="/mcp" onClick={(e) => { e.preventDefault(); navigate("/mcp"); }}>MCP</a></div></div>
+      <div className="nav-dropdown"><button>Developers <ChevronDown size={14}/></button><div className="dropdown-panel"><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Documentation</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>CLI</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Integrations</a></div></div>
+      <a href="#founding">Founding</a><a href="/pricing" onClick={(e) => { e.preventDefault(); navigate("/pricing"); }}>Pricing</a><a className="nav-cta" href="/download" onClick={(e) => { e.preventDefault(); navigate("/download"); }}>Get Taho <ArrowRight size={15}/></a>
+    </nav><button className="menu-toggle" aria-label="Toggle navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button></header>
 
-      <FadeInSection>
-        <ResponseInspectorSection />
-      </FadeInSection>
+    <main>
+      <section className="hero section-pad"><div className="hero-grid"><div className="hero-copy"><div className="eyebrow"><span className="status-dot"/> MOBILE-FIRST API ENGINEERING</div><h1>The API engineering workbench <span>built for your phone.</span></h1><p className="hero-lead">Test APIs. Find security flaws. Automate regression checks. Understand every response—from anywhere.</p><div className="hero-actions"><a className="button primary" href="/download" onClick={(e) => { e.preventDefault(); navigate("/download"); }}>Get Taho <ArrowRight size={17}/></a><a className="button secondary" href="#demo">See how it works <span>↓</span></a></div><div className="hero-proof"><span><Check size={14}/> Testing</span><span><Check size={14}/> Security</span><span><Check size={14}/> Automation</span><span><Check size={14}/> BYOK AI</span></div></div><ProductVisual/></div></section>
 
-      <FadeInSection>
-        <HowItWorks />
-      </FadeInSection>
+      <section id="demo" className="demo-section section-pad"><div className="section-kicker">PRODUCT PROOF / INTERACTIVE</div><div className="section-heading-row"><div><h2>One workflow. Five useful views.</h2><p>Build a request, inspect the response, analyze security, assert behavior, then run the workflow again.</p></div><span className="demo-data">DEMO DATA</span></div><div className="product-demo"><div className="demo-tabs">{demoStates.map((item, i) => { const Icon = item.icon; return <button className={demo === i ? "active" : ""} onClick={() => setDemo(i)} key={item.label}><Icon size={15}/>{item.label}</button>; })}</div><div className="demo-content"><div className="demo-title"><span>TAHO / WORKBENCH</span><span className="live-indicator"><CircleDot size={12}/> READY</span></div>{demoStates[demo].content}</div></div></section>
 
-      <FadeInSection>
-        <Comparison />
-      </FadeInSection>
+      <section className="problem section-pad"><div className="problem-card"><div><div className="section-kicker">THE PROBLEM</div><h2>Serious API work shouldn't stop when you leave your desk.</h2></div><p>Desktop API clients are powerful, but the workflow is often anchored to one machine. Taho takes the engineering loop—request, response, security, tests and automation—and designs it for a phone first.</p></div></section>
 
-      <FadeInSection>
-        <Pricing />
-      </FadeInSection>
+      <section className="pillars section-pad">{pillars.map((pillar) => { const Icon = pillar.icon; return <article className="pillar" id={pillar.id} key={pillar.id}><div className="pillar-number">{pillar.eyebrow}</div><div className="pillar-grid"><div><div className="pillar-icon"><Icon size={21}/></div><h2>{pillar.title}</h2></div><div><p>{pillar.copy}</p><ul>{pillar.points.map(point => <li key={point}><Check size={15}/>{point}</li>)}</ul></div></div></article>; })}</section>
 
-      <Footer onOpenLegal={(type) => setActiveModal(type)} />
+      <section id="response" className="response section-pad"><div className="response-copy"><div className="section-kicker">04 / RESPONSE INTELLIGENCE</div><h2>Understand every response.</h2><p>A response viewer should tell you more than whether JSON is pretty. Inspect status, headers, cookies, diagnostics, assertions, diffs, JWT details and security findings in one workflow.</p><div className="response-tree"><span>Response</span><span>├─ Diagnostics</span><span>├─ Security</span><span>├─ Assertions</span><span>├─ Diff</span><span>└─ AI explanation</span></div></div><div className="response-card"><div className="response-card-top"><span>200 OK</span><span>428 ms</span><span>application/json</span></div><div className="json-block">{`{\n  "user": {\n    "id": 1842,\n    "name": "Ada",\n    "roles": ["developer"]\n  },\n  "meta": {"requestId": "demo-7c91"}\n}`}</div><div className="diagnostic-row"><span>SECURITY</span><b>A-</b><span>2 findings</span></div></div></section>
 
-      {/* Interactive Modal */}
-      <LegalModal 
-        type={activeModal} 
-        onClose={() => setActiveModal(null)} 
-      />
-    </div>
-  );
+      <section className="ai-strip section-pad"><div className="ai-card"><div className="ai-icon"><Bot size={23}/></div><div><div className="section-kicker">05 / AI — BYOK</div><h2>Your API copilot.</h2><p>Explain responses, generate assertions, analyze failures and explore edge cases with your own AI provider. AI enhances the workflow; it isn't the product.</p></div><a href="/ai" onClick={(e) => { e.preventDefault(); navigate("/ai"); }} className="text-link">Explore AI <ArrowRight size={15}/></a></div></section>
+
+      <section className="mcp section-pad"><div className="mcp-card"><div><div className="section-kicker">06 / MCP — ADVANCED / PREVIEW</div><h2>Let AI agents work with real API tooling.</h2><p>Expose bounded tooling for request execution, response inspection, security analysis and test runs—with explicit permissions and user control.</p><a href="/mcp" onClick={(e) => { e.preventDefault(); navigate("/mcp"); }} className="text-link">View MCP architecture <ArrowRight size={15}/></a></div><div className="flow"><span>AI Agent</span><i>↓</i><span>Taho MCP Bridge</span><i>↓</i><span>Request → Response → Security → Tests</span></div></div></section>
+
+      <section className="ecosystem section-pad"><div className="section-kicker">DEVELOPER ECOSYSTEM</div><h2>Bring the workflow. Keep the engineering loop.</h2><div className="ecosystem-flow"><span>cURL / Postman / OpenAPI / HAR</span><b>↓</b><strong>TAHO</strong><b>↓</b><span>Testing → Security → Automation</span><b>↓</b><span>CLI → CI/CD → Monitoring</span></div></section>
+
+      <section id="founding" className="founding section-pad"><div className="founding-card"><div><div className="section-kicker">PRE-CAMPAIGN / FOUNDING SUPPORT</div><h2>Help build the next generation of mobile API tooling.</h2><p>Taho exists because serious API tooling should not require a desktop. A future supporter program can help fund product development, mobile UX, security research, automation, documentation and reliability.</p></div><div className="supporter-tiers"><div><span>Supporter</span><b>₹499</b><small>PROPOSED</small></div><div><span>Early Pro</span><b>₹999</b><small>PROPOSED</small></div><div><span>Founder</span><b>₹2,499</b><small>PROPOSED</small></div><div><span>Sponsor</span><b>₹10,000+</b><small>PROPOSED</small></div></div><div className="founding-actions"><a className="button primary" href="mailto:sagarvivek141@gmail.com?subject=Taho%20Founding%20List">Join the founding list <ArrowRight size={16}/></a><span>Planned structure · not a live campaign</span></div></div></section>
+
+      <section className="roadmap section-pad"><div className="section-kicker">ROADMAP / HONEST STATUS</div><h2>What's shipped, what's next, what's still an idea.</h2><div className="roadmap-grid"><Roadmap title="NOW" status="Available" items={["Core API testing", "Security analysis", "Collections", "Environments", "Response intelligence"]}/><Roadmap title="NEXT" status="Beta / Planned" items={["Advanced automation", "Monitoring", "CLI / CI", "Expanded protocol support", "Improved reporting"]}/><Roadmap title="EXPLORING" status="Exploring" items={["AI expansion", "MCP", "Team workflows", "Cloud sync", "Advanced API security"]}/></div></section>
+
+      <section className="trust section-pad"><div className="trust-grid"><div><div className="section-kicker">TRUST / PRIVACY</div><h2>Your API data stays under your control.</h2></div><div className="trust-list"><span><LockKeyhole size={17}/> Local-first capabilities where supported</span><span><Bot size={17}/> BYOK AI for supported providers</span><span><ShieldCheck size={17}/> Secure secret handling</span><span><Code2 size={17}/> Transparent product boundaries</span></div></div></section>
+    </main>
+    <Footer navigate={navigate}/>
+  </div>;
 }
+
+function ProductVisual() { return <div className="product-visual"><div className="phone-shell"><div className="phone-top"><span>TAHO</span><span>● 09:41</span></div><div className="phone-nav"><span>WORKBENCH</span><span>•••</span></div><div className="phone-request"><div><span className="method">GET</span><span className="mono">/api/users</span></div><div className="phone-line"/><div className="mini-label">AUTHORIZATION</div><div className="secret-line">Bearer •••••••••</div></div><div className="phone-response"><div className="response-head"><span>RESPONSE</span><b>200 OK</b></div><div className="phone-json">{`{\n  "id": 1842,\n  "name": "Ada",\n  "role": "developer"\n}`}</div></div><div className="phone-security"><span>SECURITY</span><b>A-</b><small>2 findings</small></div><div className="phone-tests"><span>TESTS</span><b>14 passed</b><small>1 warning</small></div></div><div className="visual-label label-one"><span>REQUEST</span><b>GET /api/users</b></div><div className="visual-label label-two"><span>SECURITY</span><b>A- · 2 findings</b></div></div>; }
+function Roadmap({ title, status, items }: { title: string; status: string; items: string[] }) { return <div className="roadmap-card"><div className="roadmap-head"><span>{title}</span><small>{status}</small></div>{items.map(item => <div className="roadmap-item" key={item}><Check size={14}/>{item}</div>)}</div>; }
+function Page({ page, navigate }: { page: typeof routeContent[string]; navigate: (href: string) => void }) { return <div className="site-shell"><header className="topbar"><a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="brand"><span className="brand-mark">T</span><span>TAHO</span></a><nav className="nav-links page-nav"><a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>Home</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Developers</a><a href="/pricing" onClick={(e) => { e.preventDefault(); navigate("/pricing"); }}>Pricing</a><a className="nav-cta" href="/download" onClick={(e) => { e.preventDefault(); navigate("/download"); }}>Get Taho <ArrowRight size={15}/></a></nav></header><main><section className="page-hero section-pad"><div className="section-kicker">TAHO / {window.location.pathname.slice(1).toUpperCase()}</div><h1>{page.title}</h1><p>{page.intro}</p></section><section className="page-sections section-pad">{page.sections.map((s, i) => <article key={s.title}><span>0{i + 1}</span><div><h2>{s.title}</h2><p>{s.copy}</p></div></article>)}</section><section className="page-cta section-pad"><div><h2>Serious API tooling, wherever you work.</h2><p>Explore the product or return to the main workflow.</p><a className="button primary" href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>Back to Taho <ArrowRight size={16}/></a></div></section></main><Footer navigate={navigate}/></div>; }
+function Footer({ navigate }: { navigate: (href: string) => void }) { return <footer className="footer"><div className="footer-main"><div><a className="brand" href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}><span className="brand-mark">T</span><span>TAHO</span></a><p>API engineering, testing, security, and automation from anywhere.</p></div><div className="footer-cols"><div><b>PRODUCT</b><a href="#testing">Testing</a><a href="#security">Security</a><a href="#automation">Automation</a><a href="/ai" onClick={(e) => { e.preventDefault(); navigate("/ai"); }}>AI</a><a href="/mcp" onClick={(e) => { e.preventDefault(); navigate("/mcp"); }}>MCP</a></div><div><b>DEVELOPERS</b><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Docs</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>CLI</a><a href="/developers" onClick={(e) => { e.preventDefault(); navigate("/developers"); }}>Integrations</a></div><div><b>TRUST</b><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="/security" onClick={(e) => { e.preventDefault(); navigate("/security"); }}>Security</a></div></div></div><div className="footer-bottom"><span>© 2026 Taho</span><a href="https://github.com/vivek-tester/Taho" target="_blank" rel="noreferrer">GitHub ↗</a><span>Built for developers who work anywhere.</span></div></footer>; }
