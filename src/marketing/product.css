@@ -1,0 +1,158 @@
+.pv-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  perspective: 1600px;
+  width: 100%;
+}
+
+.pv-depth {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.pv-halo {
+  position: absolute;
+  inset: -12% -18%;
+  background: radial-gradient(closest-side, rgba(201, 146, 42, 0.13), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.pv-device {
+  width: min(420px, 88vw);
+  border-radius: 34px;
+  border: 1px solid rgba(242, 236, 221, 0.14);
+  background: linear-gradient(180deg, #14110d 0%, #0b0a08 100%);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(242, 236, 221, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.pv-device-frame {
+  padding: 18px 16px 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.pv-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--taho-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--taho-faint);
+}
+
+.pv-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--taho-green);
+  box-shadow: 0 0 10px rgba(87, 185, 129, 0.7);
+}
+
+.pv-statusbar-label {
+  color: var(--taho-gold);
+}
+
+.pv-statusbar-time,
+.pv-statusbar-batt {
+  margin-left: auto;
+}
+
+.pv-statusbar-batt {
+  margin-left: 0;
+}
+
+.pv-body {
+  display: grid;
+  gap: 10px;
+}
+
+.pv-method-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--taho-panel2);
+  border: 1px solid var(--taho-line);
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-family: var(--taho-mono);
+  font-size: 12.5px;
+}
+
+.pv-method-chip {
+  color: #0b0a08;
+  background: var(--taho-green);
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.pv-url {
+  color: var(--taho-ivory);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pv-send {
+  margin-left: auto;
+  color: var(--taho-gold-bright);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+}
+
+.pv-response-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--taho-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+.pv-status-ok {
+  color: var(--taho-green);
+  font-weight: 700;
+}
+
+.pv-latency,
+.pv-ctype {
+  color: var(--taho-faint);
+}
+
+.pv-badge-sec {
+  color: var(--taho-gold-bright);
+  border: 1px solid var(--taho-gold);
+  border-radius: 6px;
+  padding: 2px 7px;
+  background: var(--taho-gold-dim);
+}
+
+.pv-badge-tests {
+  color: var(--taho-ivory-dim);
+  border: 1px solid var(--taho-line-strong);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+.pv-json {
+  background: #0a0908;
+  border: 1px solid var(--taho-line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.pv-json-pre {
+  margin: 0;
+  font-family: var(--taho-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--taho-ivory-dim);
+}
