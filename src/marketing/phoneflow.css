@@ -1,6 +1,9 @@
 .pf-wrap { display:grid; grid-template-columns: minmax(0,0.9fr) minmax(0,1.1fr); gap: clamp(28px,4vw,56px); max-width:1200px; margin:0 auto; padding: clamp(96px,14vh,180px) clamp(20px,5vw,56px); }
 .pf-steps { display:grid; gap: clamp(48px,8vh,110px); }
 .pf-step { max-width:620px; }
+.pf-step{opacity:0.55; transition:opacity 200ms ease;}
+.pf-step[data-active="true"]{opacity:1;}
+.pf-fade{transition:opacity 200ms ease;}
 .pf-phone-col { position:relative; }
 .pf-phone-sticky { position:sticky; top:90px; display:grid; place-items:center; }
 .pf-device { width:min(380px,88vw); border-radius:34px; border:1px solid rgba(255,255,255,0.11); background:linear-gradient(180deg,#14110d 0%,#0b0a08 100%); overflow:hidden; }

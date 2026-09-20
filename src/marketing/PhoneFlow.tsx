@@ -1,3 +1,4 @@
+import {useEffect,useRef,useState} from 'react';
 import './phoneflow.css';
 
 export type PhoneScreen = 'compose' | 'sending' | 'response' | 'security' | 'tests' | 'act';
@@ -20,7 +21,18 @@ function PhoneScreenView({ screen }: { screen: PhoneScreen }) {
   return (<div className="pf-screen" role="img" aria-label="Edit share PDF"><div className="pf-send">EDIT REQUEST</div><div>Share · PDF</div></div>);
 }
 
-export function PhoneFlow() {
-  const active = PHONE_STEPS[0];
-  return (<div className="pf-wrap"><div className="pf-steps">{PHONE_STEPS.map((s) => (<section key={s.id} id={`pf-${s.id}`} className="pf-step"><p>{s.kicker}</p><h2>{s.headline}</h2><p>{s.lede}</p></section>))}</div><div className="pf-phone-col"><div className="pf-phone-sticky"><div className="pf-device"><PhoneScreenView screen={active.screen} /></div></div></div></div>);
+export function PhoneFlow(){
+  const [activeIdx,setActiveIdx]=useState(0);
+  const refs=useRef<Array<HTMLElement|null>>([]);
+  useEffect(()=>{
+    if(typeof IntersectionObserver==='undefined') return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const obs=new IntersectionObserver((entries)=>{
+      for(const e of entries){ if(e.isIntersecting){ const i=refs.current.findIndex(el=>el===e.target); if(i>=0) setActiveIdx(i); } }
+    },{rootMargin:'-40% 0px -50% 0px',threshold:0});
+    refs.current.forEach(el=>{ if(el) obs.observe(el); });
+    return ()=>obs.disconnect();
+  },[]);
+  const active=PHONE_STEPS[activeIdx];
+  return (<div className="pf-wrap"><div className="pf-steps">{PHONE_STEPS.map((s,i)=>(<section key={s.id} id={`pf-${s.id}`} ref={el=>{refs.current[i]=el;}} className="pf-step" data-active={i===activeIdx}><p>{s.kicker} · {i+1}/6</p><h2>{s.headline}</h2><p>{s.lede}</p></section>))}</div><div className="pf-phone-col"><div className="pf-phone-sticky"><div className="pf-device" aria-live="polite"><PhoneScreenView screen={active.screen}/></div><p aria-hidden="true">{activeIdx+1}/6</p></div></div></div>);
 }
