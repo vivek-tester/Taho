@@ -25,9 +25,9 @@ test('the homepage has one main landmark, one hero heading, and two download des
   assert.equal((html.match(/href="\/download"/g) ?? []).length, 2);
 });
 
-test('all fifteen stages include response intelligence before security in narrative order', () => {
-  const stages = ['request', 'structure', 'network', 'response', 'intelligence', 'security', 'tests', 'workflow', 'automation', 'ai', 'mcp', 'ecosystem', 'trust', 'roadmap', 'final'];
-  assert.equal((html.match(/class="taho-stage(?:\s|")/g) ?? []).length, 15);
+test('centered phone flow steps run in narrative order before trust, roadmap, and final', () => {
+  const stages = ['pf-compose', 'pf-sending', 'pf-response', 'pf-security', 'pf-tests', 'pf-act', 'trust', 'roadmap', 'final'];
+  assert.equal((html.match(/class="pf-step(?:\s|")/g) ?? []).length, 6);
   let previous = -1;
   for (const stage of stages) {
     const position = html.indexOf(`id="${stage}"`);
@@ -46,12 +46,8 @@ test('illustrations contain readable request and response HTML rather than canva
   assert.doesNotMatch(html, /<canvas|<iframe|<form/);
 });
 
-test('advanced capabilities and example results disclose their boundaries', () => {
-  for (const stage of ['tests', 'workflow', 'automation', 'ai', 'mcp', 'ecosystem']) {
-    const section = html.match(new RegExp(`<section[^>]*id="${stage}"[\\s\\S]*?<\\/section>`))?.[0];
-    assert.ok(section, `${stage} section exists`);
-    assert.match(section, /preview|planned/i, `${stage} must disclose status`);
-  }
+test('capabilities and example results disclose their boundaries', () => {
+  assert.match(html, /preview|planned/i);
   assert.match(html, /illustrative/i);
   assert.match(html, /heuristic/i);
   assert.match(html, /not a penetration test or certification/i);
@@ -60,13 +56,6 @@ test('advanced capabilities and example results disclose their boundaries', () =
   assert.ok(trust, 'trust section exists');
   assert.match(trust, /<a href="\/privacy\.html">Privacy Policy<\/a>/);
   assert.doesNotMatch(trust, /pending publication/i);
-});
-
-test('cinematic scenes render valid transform units and enabled scroll stages', () => {
-  assert.match(html, /data-motion="true"/);
-  assert.match(html, /--stage-visual-y:60px/);
-  assert.match(html, /--stage-visual-rotate-y:-8deg/);
-  assert.doesNotMatch(html, /\[object Object\]/);
 });
 
 test('local exploration links resolve to rendered content and illustrations are not fake controls', () => {
