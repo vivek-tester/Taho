@@ -60,3 +60,12 @@ test('local exploration links resolve to rendered content and illustrations are 
   assert.doesNotMatch(html, /<button\b/);
   assert.equal(ids.size, [...html.matchAll(/\bid="([^"]+)"/g)].length);
 });
+
+test('every /# target used in Navbar/Footer exists as an id on Home', () => {
+  const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
+  const targets = ['pf-compose', 'pf-response', 'pf-act', 'roadmap', 'main-content'];
+  for (const target of targets) {
+    assert.ok(ids.has(target), `Missing /# anchor target: ${target}`);
+    assert.match(html, new RegExp(`id="${target}"`));
+  }
+});
