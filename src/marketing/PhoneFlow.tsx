@@ -34,5 +34,5 @@ export function PhoneFlow(){
     return ()=>obs.disconnect();
   },[]);
   const active=PHONE_STEPS[activeIdx];
-  return (<div className="pf-wrap"><div className="pf-steps">{PHONE_STEPS.map((s,i)=>(<section key={s.id} id={`pf-${s.id}`} ref={el=>{refs.current[i]=el;}} className="pf-step" data-active={i===activeIdx ? 'true' : undefined}><p>{s.kicker} · {i+1}/6</p><h2>{s.headline}</h2><p>{s.lede}</p></section>))}</div><div className="pf-phone-col"><div className="pf-phone-sticky"><div className="pf-device" aria-live="polite"><PhoneScreenView screen={active.screen}/></div><p aria-hidden="true">{activeIdx+1}/6</p></div></div></div>);
+  return (<div className="pf-wrap"><div className="pf-steps">{PHONE_STEPS.map((s,i)=>(<section key={s.id} id={`pf-${s.id}`} ref={el=>{refs.current[i]=el;}} className="pf-step" data-active={i===activeIdx ? 'true' : undefined}><p>{s.kicker} · {i+1}/6</p><h2>{s.headline}</h2><p>{s.lede}</p></section>))}</div><div className="pf-phone-col"><div className="pf-phone-sticky"><div className="pf-device" aria-live="polite"><div className="pf-notch" aria-hidden="true" /><div className="pf-statusbar" aria-hidden="true"><span>9:41</span><span>TAHO</span><span>86%</span></div><div className="pf-screenwrap"><PhoneScreenView screen={active.screen} /></div></div><p aria-hidden="true">{activeIdx+1}/6</p></div></div></div>);
 }
