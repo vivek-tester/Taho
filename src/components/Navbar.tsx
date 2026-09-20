@@ -15,7 +15,7 @@ export const Navbar = () => {
       <a href="/" className="site-brand" aria-label="Taho home"><Logo className="w-7 h-7" /> TAHO</a>
       <div className="site-nav-links">
         <details><summary>Product</summary><div className="nav-menu">
-          <a href="/#pf-compose">The workbench</a><a href="/security">Security</a><a href="/ai">AI / BYOK</a><a href="/mcp">MCP preview</a>
+          <a href="/#request">The workbench</a><a href="/security">Security</a><a href="/ai">AI / BYOK</a><a href="/mcp">MCP preview</a>
         </div></details>
         <a className="desktop-link" href="/developers">Developers</a>
         <a className="desktop-link" href="/pricing">Pricing</a>

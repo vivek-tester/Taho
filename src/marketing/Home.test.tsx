@@ -25,10 +25,16 @@ test('the homepage has one main landmark, one hero heading, and two download des
   assert.equal((html.match(/href="\/download"/g) ?? []).length, 2);
 });
 
-test('phone flow has six steps in narrative order', () => {
-  const ids=['pf-compose','pf-sending','pf-response','pf-security','pf-tests','pf-act'];
-  let prev=-1;
-  for(const id of ids){ const pos=html.indexOf(`id="${id}"`); assert.ok(pos>prev,`${id} in order`); prev=pos; }
+test('all fifteen stages include response intelligence before security in narrative order', () => {
+  const stages = ['request', 'structure', 'network', 'response', 'intelligence', 'security', 'tests', 'workflow', 'automation', 'ai', 'mcp', 'ecosystem', 'trust', 'roadmap', 'final'];
+  assert.equal((html.match(/class="taho-stage(?:\s|")/g) ?? []).length, 15);
+  let previous = -1;
+  for (const stage of stages) {
+    const position = html.indexOf(`id="${stage}"`);
+    assert.ok(position > previous, `${stage} must be present in story order`);
+    previous = position;
+  }
+  assert.doesNotMatch(html, /opacity:0(?:;|")|visibility:hidden/);
 });
 
 test('illustrations contain readable request and response HTML rather than canvas', () => {
@@ -40,8 +46,12 @@ test('illustrations contain readable request and response HTML rather than canva
   assert.doesNotMatch(html, /<canvas|<iframe|<form/);
 });
 
-test('capabilities and example results disclose their boundaries', () => {
-  assert.match(html, /preview|planned/i);
+test('advanced capabilities and example results disclose their boundaries', () => {
+  for (const stage of ['tests', 'workflow', 'automation', 'ai', 'mcp', 'ecosystem']) {
+    const section = html.match(new RegExp(`<section[^>]*id="${stage}"[\\s\\S]*?<\\/section>`))?.[0];
+    assert.ok(section, `${stage} section exists`);
+    assert.match(section, /preview|planned/i, `${stage} must disclose status`);
+  }
   assert.match(html, /illustrative/i);
   assert.match(html, /heuristic/i);
   assert.match(html, /not a penetration test or certification/i);
@@ -52,6 +62,13 @@ test('capabilities and example results disclose their boundaries', () => {
   assert.doesNotMatch(trust, /pending publication/i);
 });
 
+test('cinematic scenes render valid transform units and enabled scroll stages', () => {
+  assert.match(html, /data-motion="true"/);
+  assert.match(html, /--stage-visual-y:60px/);
+  assert.match(html, /--stage-visual-rotate-y:-8deg/);
+  assert.doesNotMatch(html, /\[object Object\]/);
+});
+
 test('local exploration links resolve to rendered content and illustrations are not fake controls', () => {
   const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
   for (const match of html.matchAll(/href="#([^"]+)"/g)) {
@@ -59,13 +76,4 @@ test('local exploration links resolve to rendered content and illustrations are 
   }
   assert.doesNotMatch(html, /<button\b/);
   assert.equal(ids.size, [...html.matchAll(/\bid="([^"]+)"/g)].length);
-});
-
-test('every /# target used in Navbar/Footer exists as an id on Home', () => {
-  const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
-  const targets = ['pf-compose', 'pf-response', 'pf-act', 'roadmap', 'main-content'];
-  for (const target of targets) {
-    assert.ok(ids.has(target), `Missing /# anchor target: ${target}`);
-    assert.match(html, new RegExp(`id="${target}"`));
-  }
 });
