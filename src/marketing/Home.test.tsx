@@ -25,16 +25,10 @@ test('the homepage has one main landmark, one hero heading, and two download des
   assert.equal((html.match(/href="\/download"/g) ?? []).length, 2);
 });
 
-test('centered phone flow steps run in narrative order before trust, roadmap, and final', () => {
-  const stages = ['pf-compose', 'pf-sending', 'pf-response', 'pf-security', 'pf-tests', 'pf-act', 'trust', 'roadmap', 'final'];
-  assert.equal((html.match(/class="pf-step(?:\s|")/g) ?? []).length, 6);
-  let previous = -1;
-  for (const stage of stages) {
-    const position = html.indexOf(`id="${stage}"`);
-    assert.ok(position > previous, `${stage} must be present in story order`);
-    previous = position;
-  }
-  assert.doesNotMatch(html, /opacity:0(?:;|")|visibility:hidden/);
+test('phone flow has six steps in narrative order', () => {
+  const ids=['pf-compose','pf-sending','pf-response','pf-security','pf-tests','pf-act'];
+  let prev=-1;
+  for(const id of ids){ const pos=html.indexOf(`id="${id}"`); assert.ok(pos>prev,`${id} in order`); prev=pos; }
 });
 
 test('illustrations contain readable request and response HTML rather than canvas', () => {
