@@ -19,7 +19,7 @@ export const Navbar = () => {
         </div></details>
         <a className="desktop-link" href="/developers">Developers</a>
         <a className="desktop-link" href="/pricing">Pricing</a>
-        <a href="/download" className="nav-cta">Get Taho <span aria-hidden="true">↗</span></a>
+        <a href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer" className="nav-cta">Get Taho <span aria-hidden="true">↗</span></a>
       </div>
     </nav>
   );
