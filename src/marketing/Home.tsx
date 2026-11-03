@@ -137,7 +137,7 @@ limit=20`}</pre>
                 <span className="taho-field taho-field--ok">user.roles · string[]</span>
                 <span className="taho-field taho-field--dim">user.metadata · object</span>
               </div>
-              <p className="taho-note">Illustrative rendering — intelligence features are part of the closed beta build.</p>
+              <p className="taho-note">Illustrative rendering — feature availability may vary by app version.</p>
             </Panel>
           }
         />
@@ -206,7 +206,7 @@ limit=20`}</pre>
               ))}
             </div>
           }
-          note="Collections, variables and chained requests are labeled preview until they ship in the closed beta build."
+          note="Collections, variables and chained requests remain labeled preview where they are not yet generally available."
         />
 
         <Scene
@@ -340,7 +340,7 @@ limit=20`}</pre>
             <div className="taho-roadmap">
               <div className="taho-roadmap-col">
                 <h3>NOW</h3>
-                <p className="taho-roadmap-sub">Closed beta</p>
+                <p className="taho-roadmap-sub">Public release</p>
                 <ul>
                   <li>API testing</li>
                   <li>Security analysis</li>
