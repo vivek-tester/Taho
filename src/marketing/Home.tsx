@@ -21,14 +21,14 @@ export default function Home() {
               Test APIs. Understand responses. Find security issues. Automate workflows.
             </p>
             <div className="taho-cta-row">
-              <a className="taho-cta taho-cta--gold" href="/download">
+              <a className="taho-cta taho-cta--gold" href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer">
                 Get Taho
               </a>
               <a className="taho-cta taho-cta--ghost" href="#request">
                 See how it works ↓
               </a>
             </div>
-            <p className="taho-badgenote">CLOSED BETA · not yet available</p>
+            <p className="taho-badgenote">ANDROID · AVAILABLE ON GOOGLE PLAY</p>
           </div>
           <div className="taho-hero-visual">
             <ProductVisual />
@@ -380,11 +380,11 @@ limit=20`}</pre>
             </h2>
             <p className="taho-lede">Test. Secure. Automate. Understand.</p>
             <div className="taho-cta-row">
-              <a className="taho-cta taho-cta--gold" href="/download">
+              <a className="taho-cta taho-cta--gold" href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer">
                 Get Taho →
               </a>
             </div>
-            <p className="taho-badgenote">CLOSED BETA · not yet available</p>
+            <p className="taho-badgenote">ANDROID · AVAILABLE ON GOOGLE PLAY</p>
           </div>
           <div className="taho-final-visual" aria-hidden="true">
             <ProductVisual static />
