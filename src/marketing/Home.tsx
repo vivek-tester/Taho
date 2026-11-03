@@ -21,14 +21,14 @@ export default function Home() {
               Test APIs. Understand responses. Find security issues. Automate workflows.
             </p>
             <div className="taho-cta-row">
-              <a className="taho-cta taho-cta--gold" href="/download">
+              <a className="taho-cta taho-cta--gold" href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer">
                 Get Taho
               </a>
               <a className="taho-cta taho-cta--ghost" href="#request">
                 See how it works ↓
               </a>
             </div>
-            <p className="taho-badgenote">CLOSED BETA · not yet available</p>
+            <p className="taho-badgenote">ANDROID · AVAILABLE ON GOOGLE PLAY</p>
           </div>
           <div className="taho-hero-visual">
             <ProductVisual />
@@ -137,7 +137,7 @@ limit=20`}</pre>
                 <span className="taho-field taho-field--ok">user.roles · string[]</span>
                 <span className="taho-field taho-field--dim">user.metadata · object</span>
               </div>
-              <p className="taho-note">Illustrative rendering — intelligence features are part of the closed beta build.</p>
+              <p className="taho-note">Illustrative rendering — feature availability may vary by app version.</p>
             </Panel>
           }
         />
@@ -206,7 +206,7 @@ limit=20`}</pre>
               ))}
             </div>
           }
-          note="Collections, variables and chained requests are labeled preview until they ship in the closed beta build."
+          note="Collections, variables and chained requests remain labeled preview where they are not yet generally available."
         />
 
         <Scene
@@ -340,7 +340,7 @@ limit=20`}</pre>
             <div className="taho-roadmap">
               <div className="taho-roadmap-col">
                 <h3>NOW</h3>
-                <p className="taho-roadmap-sub">Closed beta</p>
+                <p className="taho-roadmap-sub">Public release</p>
                 <ul>
                   <li>API testing</li>
                   <li>Security analysis</li>
@@ -380,11 +380,11 @@ limit=20`}</pre>
             </h2>
             <p className="taho-lede">Test. Secure. Automate. Understand.</p>
             <div className="taho-cta-row">
-              <a className="taho-cta taho-cta--gold" href="/download">
+              <a className="taho-cta taho-cta--gold" href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer">
                 Get Taho →
               </a>
             </div>
-            <p className="taho-badgenote">CLOSED BETA · not yet available</p>
+            <p className="taho-badgenote">ANDROID · AVAILABLE ON GOOGLE PLAY</p>
           </div>
           <div className="taho-final-visual" aria-hidden="true">
             <ProductVisual static />
