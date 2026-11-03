@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Waitlist } from '../components/Waitlist';
 import './pages.css';
 
 const headlines: Record<string, string> = {
@@ -7,7 +6,7 @@ const headlines: Record<string, string> = {
   '/ai': 'What does AI actually do inside Taho?',
   '/mcp': 'Let agents work with real API tooling.',
   '/developers': 'Built for developers.',
-  '/pricing': 'Pricing. Start with the beta.',
+  '/pricing': 'Straightforward pricing for Taho.',
   '/download': 'Where can I get Taho?',
 };
 
@@ -167,69 +166,45 @@ function DevelopersSection() {
 
 function PricingSection() {
   return (
-    <section className="page-section" aria-labelledby="pricing-beta-heading">
-      <h2 id="pricing-beta-heading">Closed beta — free</h2>
+    <section className="page-section" aria-labelledby="pricing-heading">
+      <h2 id="pricing-heading">Pricing information</h2>
       <p>
-        Taho is in closed beta. The full app is free during the closed beta. Published plans below are not finalized
-        and may change before general availability.
+        Taho is publicly available on Google Play. Current pricing and any in-app purchase options are shown in the
+        Play Store listing and inside the app.
       </p>
-      <p className="status-badge">CLOSED BETA</p>
-      <div className="pricing-cards">
-        <div className="pricing-card">
-          <h3>Free</h3>
-          <p className="price">₹0</p>
-          <p>free during the closed beta</p>
-          <ul>
-            <li>Unlimited collections and requests</li>
-            <li>Security analysis</li>
-            <li>Response intelligence</li>
-          </ul>
-        </div>
-        <div className="pricing-card pricing-card-pro">
-          <h3>Pro</h3>
-          <p className="price">₹1,499/year</p>
-          <p>or ₹179/month</p>
-          <p>Planned for post-beta. Not finalized.</p>
-          <ul>
-            <li>Unlimited environments</li>
-            <li>Extended history and search</li>
-            <li>PDF security reports</li>
-          </ul>
-        </div>
-      </div>
       <p className="limitation">
-        Nothing is for sale during the closed beta. No payment is collected and no purchase flow exists yet.
+        We will publish plan details here when the available plans and limits are finalized. No unpublished pricing
+        is presented as an active offer.
       </p>
+      <a className="taho-cta taho-cta--gold" href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer">
+        View Taho on Google Play ↗
+      </a>
     </section>
   );
 }
 
 function DownloadSection() {
   return (
-    <>
-      <section className="page-section" aria-labelledby="download-status-heading">
-        <h2 id="download-status-heading">Closed beta</h2>
-        <p>
-          Taho is currently in closed beta. There are no production install links yet — no store listing and no APK
-          distribution is available at this time.
-        </p>
-        <dl className="requirements">
-          <div>
-            <dt>Platform</dt>
-            <dd>Android</dd>
-          </div>
-          <div>
-            <dt>Requirement</dt>
-            <dd>Compatibility details will accompany beta invitations.</dd>
-          </div>
-        </dl>
-        <p className="limitation">
-          There is no guarantee of acceptance. Joining the waitlist only registers interest; beta access is granted in
-          waves as capacity allows.
-        </p>
-      </section>
-      <Waitlist />
-    </>
+    <section className="page-section" aria-labelledby="download-status-heading">
+      <h2 id="download-status-heading">Available on Google Play</h2>
+      <p>
+        Taho is publicly released for Android. Open the official Google Play listing to view the app details,
+        compatibility information, screenshots, and install options.
+      </p>
+      <dl className="requirements">
+        <div>
+          <dt>Platform</dt>
+          <dd>Android</dd>
+        </div>
+        <div>
+          <dt>Distribution</dt>
+          <dd>Google Play — official listing</dd>
+        </div>
+      </dl>
+      <a className="taho-cta taho-cta--gold" href="https://play.google.com/store/apps/details?id=com.eternal.taho" target="_blank" rel="noopener noreferrer">
+        Get Taho on Google Play ↗
+      </a>
+    </section>
   );
 }
 
